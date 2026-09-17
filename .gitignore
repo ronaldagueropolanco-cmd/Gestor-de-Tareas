@@ -18,3 +18,5 @@ __pycache__/
 
 # Logs y bases de datos locales si llegaras a usar SQLite (en SQL Server esto no aplica, pero es útil)
 *.log
+
+SQLQuery2.sql
