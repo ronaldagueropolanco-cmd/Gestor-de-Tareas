@@ -1,0 +1,8 @@
+CREATE DATABASE GestorTareas;
+USE GestorTareas;
+
+CREATE TABLE tareas (
+id INT IDENTITY(1,1) PRIMARY KEY,
+titulo VARCHAR(100) NOT NULL,
+completada BIT DEFAULT 0
+);
