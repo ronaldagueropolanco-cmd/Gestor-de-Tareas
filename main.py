@@ -18,3 +18,14 @@ def conectar_db():
         print(f'Error al conectar: {e}')
         return None
 
+def agregar_tareas(titulo):
+    conexion = conectar_db()
+    if conexion:
+        cursor = conexion.cursor()
+        cursor.execute("INSERT INTO tareas (titulo) VALUES(?)", titulo)
+        cursor.commit()
+        cursor.close()
+        print('¡Tarea guardada en SQL Server con éxito!')
+    else:
+        conexion.rollback()
+        return "Hubo un problema"
