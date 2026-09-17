@@ -14,25 +14,25 @@ def conectar_db():
     try:
         conexion = pyodbc.connect(conexion_str)
         return conexion
-    except Exception as e:
-        print(f'Error al conectar: {e}')
+    except:
+        print(f'Error al conectar')
         return None
 
 def agregar_tareas(titulo):
     conexion = conectar_db()
-    if conexion:
+    try:
         cursor = conexion.cursor()
         cursor.execute("INSERT INTO tareas (titulo) VALUES(?)", titulo)
         cursor.commit()
         cursor.close()
         print('¡Tarea guardada en SQL Server con éxito!')
-    else:
+    except:
         conexion.rollback()
-        return "Hubo un problema"
+        print("Hubo un error, se han revertido los cambios")
 
 def ver_tareas():
     conexion = conectar_db()
-    if conexion:
+    try:
         cursor = conexion.cursor()
         cursor.execute("SELECT * FROM tareas")
 
@@ -40,6 +40,8 @@ def ver_tareas():
         for fila in filas:
             estado = "Completada" if fila[2] == 1 else "Pendiente"
             print(f"ID: {fila[0]} | Titulo: {fila[1]} | Estado: {estado}")
-    else:
+    except:
         conexion.rollback()
-        return "Hubo un problema"
+        print("Hubo un error, se han revertido los cambios")
+
+ver_tareas()
