@@ -29,3 +29,17 @@ def agregar_tareas(titulo):
     else:
         conexion.rollback()
         return "Hubo un problema"
+
+def ver_tareas():
+    conexion = conectar_db()
+    if conexion:
+        cursor = conexion.cursor()
+        cursor.execute("SELECT * FROM tareas")
+
+        filas = cursor.fetchall()
+        for fila in filas:
+            estado = "Completada" if fila[2] == 1 else "Pendiente"
+            print(f"ID: {fila[0]} | Titulo: {fila[1]} | Estado: {estado}")
+    else:
+        conexion.rollback()
+        return "Hubo un problema"
