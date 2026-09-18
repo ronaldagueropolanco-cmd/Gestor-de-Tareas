@@ -45,19 +45,43 @@ def ver_tareas():
         conexion.rollback()
         print("\nHubo un error, se han revertido los cambios")
 
+def actualizar_tarea():
+    conexion = conectar_db()
+    try:
+        id_tarea = int(input("Ingrese el ID de la tarea: "))
+        cursor = conexion.cursor()
+        cursor.execute("SELECT * FROM tareas")
+
+        filas = cursor.fetchall()
+        if id_tarea in filas[0]:
+            titulo_nuevo = input("Ingrese el nuevo titulo: ")
+            cursor.execute("UPDATE tareas SET titulo = ? WHERE id = ?", titulo_nuevo, id_tarea)
+            cursor.commit()
+            cursor.close()
+        else:
+            print("Esta tarea aun no esta registrada")
+    except:
+        conexion.rollback()
+        print("\nHubo un error, se han revertido los cambios")
+
 def menu():
     while True:
         opcion = input("\n1. Agregar tareas\n" \
                     "2. Ver Tareas\n" \
-                    "3. Salir\n" \
+                    "3. Actualizar\n" \
+                    "4. Salir\n" \
                     "Elige una opcion: ")
         
         if opcion == "1":
             agregar_tareas()
         elif opcion == "2":
             ver_tareas()
-        else:
+        elif opcion == "3":
+            actualizar_tarea()
+        elif opcion == "4":
             break
+        else:
+            print("Opcion no valida")
 
 
 menu()
