@@ -58,6 +58,26 @@ def actualizar_tarea():
             cursor.execute("UPDATE tareas SET titulo = ? WHERE id = ?", titulo_nuevo, id_tarea)
             cursor.commit()
             cursor.close()
+            print("¡Tarea guardada en SQL Server con éxito!")
+        else:
+            print("Esta tarea aun no esta registrada")
+    except:
+        conexion.rollback()
+        print("\nHubo un error, se han revertido los cambios")
+
+def eliminar_tarea():
+    conexion = conectar_db()
+    try:
+        id_tarea = int(input("Ingrese el ID de la tarea: "))
+        cursor = conexion.cursor()
+        cursor.execute("SELECT * FROM tareas")
+
+        filas = cursor.fetchall()
+        if id_tarea in filas[0]:
+            cursor.execute("DELETE FROM tareas WHERE id = ?", id_tarea)
+            cursor.commit()
+            cursor.close()
+            print("\n¡Tarea eliminada con exito!")
         else:
             print("Esta tarea aun no esta registrada")
     except:
@@ -68,8 +88,9 @@ def menu():
     while True:
         opcion = input("\n1. Agregar tareas\n" \
                     "2. Ver Tareas\n" \
-                    "3. Actualizar\n" \
-                    "4. Salir\n" \
+                    "3. Actualizar tarea\n" \
+                    "4. Eliminar tarea\n" \
+                    "5. Salir\n" \
                     "Elige una opcion: ")
         
         if opcion == "1":
@@ -79,6 +100,8 @@ def menu():
         elif opcion == "3":
             actualizar_tarea()
         elif opcion == "4":
+            eliminar_tarea()
+        elif opcion == "5":
             break
         else:
             print("Opcion no valida")
